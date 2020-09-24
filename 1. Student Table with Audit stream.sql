@@ -16,8 +16,13 @@ b) Prepare scripts to maintain the timeseries and audit on the table
 -- SQL Server newer versions do have inbuild audit /timeseries thru history tables. 
 -- but keep thing old school we can make use of another audit table and push data when changed in orignal table thru Triggers. although this is not eficient with bulk data
 
-
-  drop table if exists dbo.Student;
+IF (OBJECT_ID('PK_Student') IS NOT NULL)
+BEGIN
+    ALTER TABLE [dbo].[Student]
+    DROP CONSTRAINT PK_Student
+END
+GO
+drop table if exists dbo.Student;
 go
 
 CREATE TABLE [dbo].[Student](
@@ -33,17 +38,25 @@ CREATE TABLE [dbo].[Student](
 
 
 go 
-
-drop Index if exists IX_UniqueStudents
-
+IF (OBJECT_ID('IX_UniqueStudents') IS NOT NULL)
+BEGIN
+    ALTER TABLE [dbo].[Students]
+    DROP CONSTRAINT IX_UniqueStudents
+END
+ 
+GO
 
 Create Unique Index IX_UniqueStudents
 on dbo.Student(Name)
 Include(Class,Interests,Subjects)
 
+GO
+ 
 
+ 
+GO
 
-  drop table if exists dbo.Student_audit;
+drop table if exists dbo.Student_audit;
 go
 
 CREATE TABLE [dbo].[Student_audit](
@@ -55,12 +68,12 @@ CREATE TABLE [dbo].[Student_audit](
 	[Class] [nvarchar](50) NOT NULL,
 	[Interests] [nvarchar](100) NULL,
 	[Subjects] [nvarchar](100) NULL,
- CONSTRAINT [PK_Student] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_Student_audit] PRIMARY KEY CLUSTERED 
 (
-	[Id] ASC
+	InsertDate ASC, State ASC, ChangedBy ASC
 ) )
 
-
+GO
 CREATE TRIGGER [dbo].[Student_Auditor]
 ON [dbo].[Student]
 AFTER INSERT,UPDATE
@@ -73,7 +86,7 @@ AS
         INSERT INTO dbo.Student_audit
         SELECT getdate(),
 	'ADDED' ,
-	user_name(),
+	SUSER_SNAME(),
 	[Id] ,
 	[Name],
 	[Class] ,
@@ -92,12 +105,12 @@ AS
          INSERT INTO dbo.Student_audit
         SELECT getdate(),
 	'UPDATED' ,
-	user_name(),
-	[Id] ,
-	[Name],
-	[Class] ,
-	[Interests] ,
-	[Subjects]
+	SUSER_SNAME(),
+	i.Id ,
+	i.Name,
+	i.Class ,
+	i.Interests ,
+	i.Subjects
         FROM   dbo.Student_audit o,
                inserted i
         WHERE  o.Id = i.Id
@@ -114,4 +127,6 @@ Insert into dbo.Student values ('Jhoonjhar Jodha','XI','Technology','Computer Sc
 update dbo.Student 
 set Name = 'J S Jodha' where class='X'
 update dbo.Student 
-set Intereests ='RPG Games' where Name 'Jhoonjhar Jodha'
+set Interests ='RPG Games' where Name ='Jhoonjhar Jodha'
+ 
+select * from dbo.Student_audit order by InsertDate desc 
