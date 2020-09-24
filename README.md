@@ -37,6 +37,8 @@ Create a web app using Angular or VueJs Which has following features
 - We should be able to specify URL of different web pages in config, and these should come up as accordion
 - Options in the app
 - On clicking any of the link, the web page should open within the container and not on separate tab or browser.
+
+
 [1]: https://github.com/jsjodha/hvs-demo/blob/master/1.%20Student%20Table%20with%20Audit%20stream.sql "Work 1"
 [1]: https://github.com/jsjodha/hvs-demo/blob/master/1.%20Student%20Table%20with%20Audit%20stream.sql "Work 1"
 [3]: https://github.com/jsjodha/hvs-demo/blob/master/2%20Procedure%20for%20Expiring%20contract.sql "Trade depth work"
