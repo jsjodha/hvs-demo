@@ -13,6 +13,8 @@ Database
 a) Make this table timeseries and audit enabled
 b) Prepare scripts to maintain the timeseries and audit on the table
 
+##  output here [[Work 1 ]][1]
+
 ### 2) Consider Following table. Write a procedure which accepts Date and Depth as parameter and returns the expiring contract.
 Depth = ordering of tickers sorted by LastTrade
 
@@ -28,9 +30,13 @@ ContractCode Ticker LastTrade
 - - NK4 12/15/2020
 - - NK5 1/15/2021
 
+## output here [[Trade Depth work]][3]
 ### 3) Web App
 Create a web app using Angular or VueJs Which has following features
 - Configurable Container UI with Header, Footer and Accordion
 - We should be able to specify URL of different web pages in config, and these should come up as accordion
 - Options in the app
 - On clicking any of the link, the web page should open within the container and not on separate tab or browser.
+[1]: https://github.com/jsjodha/hvs-demo/blob/master/1.%20Student%20Table%20with%20Audit%20stream.sql "Work 1"
+[1]: https://github.com/jsjodha/hvs-demo/blob/master/1.%20Student%20Table%20with%20Audit%20stream.sql "Work 1"
+[3]: https://github.com/jsjodha/hvs-demo/blob/master/2%20Procedure%20for%20Expiring%20contract.sql "Trade depth work"
